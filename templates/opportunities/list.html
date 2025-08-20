@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NIVARA - Opportunities</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin:0; }
+    .container { max-width: 960px; margin: 20px auto; background:#fff; padding:20px; border-radius:6px; box-shadow:0 1px 6px rgba(0,0,0,0.08); }
+    h1 { margin:0 0 16px; }
+    .actions { margin-bottom: 12px; }
+    a.button { display:inline-block; padding:8px 12px; background:#333; color:#fff; text-decoration:none; border-radius:4px; }
+    table { width:100%; border-collapse: collapse; }
+    th, td { padding: 8px; border-bottom:1px solid #eee; text-align:left; }
+    tr:hover { background:#fafafa; }
+    .row-actions form { display:inline; }
+    .row-actions button { background:#f44336; color:white; border:none; padding:6px 10px; border-radius:4px; cursor:pointer; }
+    .topnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .nav a{margin-right:8px}
+    .footer { text-align:center; color:#777; font-size:12px; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topnav">
+      <h1>NIVARA — Opportunities</h1>
+      <div class="nav">
+        <a href="/" class="button" style="background:#4CAF50">Dashboard</a>
+        <a href="/customers" class="button">Customers</a>
+        <a href="/leads" class="button">Leads</a>
+        <a href="/logout" class="button" style="background:#f44336">Logout</a>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a href="/opportunities/new" class="button" style="background:#4CAF50">+ New Opportunity</a>
+      <a href="/opportunities/export.csv" class="button">Export CSV</a>
+      <a href="/opportunities/export.xlsx" class="button">Export XLSX</a>
+      <a href="/opportunities/sample.csv" class="button" style="background:#1976D2">Download Sample CSV</a>
+      <form method="POST" action="/opportunities/import" enctype="multipart/form-data" style="display:inline-block;margin-left:8px">
+        <input type="file" name="file" accept=".csv,.xlsx,.xls" required>
+        <button type="submit" class="button">Import</button>
+      </form>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div>
+      {% for message in messages %}
+      <div style="padding:8px;background:#d4edda;color:#155724;border-radius:4px;margin-bottom:8px">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Amount</th>
+          <th>Stage</th>
+          <th>Status</th>
+          <th>Close Date</th>
+          <th style="width:160px">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in opportunities %}
+        <tr>
+          <td>{{ o['title'] }}</td>
+          <td>{{ o['amount'] or '' }}</td>
+          <td>{{ o['stage'] or '' }}</td>
+          <td>{{ o['status'] or '' }}</td>
+          <td>{{ o['close_date'] or '' }}</td>
+          <td class="row-actions">
+            <a class="button" href="/opportunities/{{ o['id'] }}/edit">Edit</a>
+            <form method="POST" action="/opportunities/{{ o['id'] }}/delete" onsubmit="return confirm('Delete this opportunity?')">
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6">No opportunities found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+      <div class="footer">&copy; NIVARA AI and Technology — Proprietary to Deepesh B Devagirikar · deepesh1203@gmail.com · +91 96866 80662</div>
+    </div>
+  </div>
+</body>
+</html>

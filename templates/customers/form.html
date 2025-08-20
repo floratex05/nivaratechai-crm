@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NIVARA - {{ 'Edit' if customer else 'New' }} Customer</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin:0; }
+    .container { max-width: 720px; margin: 20px auto; background:#fff; padding:20px; border-radius:6px; box-shadow:0 1px 6px rgba(0,0,0,0.08); }
+    h1 { margin:0 0 16px; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    label { display:block; font-size: 12px; color:#333; margin-bottom:4px; }
+    input, textarea, select { width:100%; padding:8px; border:1px solid #ddd; border-radius:4px; box-sizing:border-box; }
+    .actions { margin-top: 16px; display:flex; gap:8px; }
+    .button { padding:8px 12px; border:none; border-radius:4px; background:#333; color:#fff; text-decoration:none; cursor:pointer; }
+    a.button.secondary { background:#777; }
+    .footer { text-align:center; color:#777; font-size:12px; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>{{ 'Edit' if customer else 'New' }} Customer</h1>
+    <form method="POST">
+      <div class="grid">
+        <div>
+          <label>Name</label>
+          <input type="text" name="name" value="{{ customer['name'] if customer else '' }}" required />
+        </div>
+        <div>
+          <label>Email</label>
+          <input type="email" name="email" value="{{ customer['email'] if customer else '' }}" />
+        </div>
+        <div>
+          <label>Mobile</label>
+          <input type="text" name="mobile" value="{{ customer['mobile'] if customer else '' }}" />
+        </div>
+        <div>
+          <label>Phone</label>
+          <input type="text" name="phone" value="{{ customer['phone'] if customer else '' }}" />
+        </div>
+        <div>
+          <label>Address</label>
+          <input type="text" name="address" value="{{ customer['address'] if customer else '' }}" />
+        </div>
+        <div>
+          <label>City</label>
+          <input type="text" name="city" value="{{ customer['city'] if customer else '' }}" />
+        </div>
+        <div>
+          <label>Pincode</label>
+          <input type="text" name="pincode" value="{{ customer['pincode'] if customer else '' }}" />
+        </div>
+        <div>
+          <label>State</label>
+          <input type="text" name="state" value="{{ customer['state'] if customer else '' }}" />
+        </div>
+        <div>
+          <label>Country</label>
+          <input type="text" name="country" value="{{ customer['country'] if customer else '' }}" />
+        </div>
+        <div style="grid-column: span 2;">
+          <label>Notes</label>
+          <textarea name="notes" rows="3">{{ customer['notes'] if customer else '' }}</textarea>
+        </div>
+        <div>
+          <label>Status</label>
+          <select name="status">
+            {% set s = customer['status'] if customer else 'active' %}
+            <option value="active" {{ 'selected' if s=='active' else '' }}>Active</option>
+            <option value="inactive" {{ 'selected' if s=='inactive' else '' }}>Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="button">Save</button>
+        <a href="/customers" class="button secondary">Cancel</a>
+      </div>
+    </form>
+    <div class="footer">&copy; NIVARA AI and Technology — Proprietary to Deepesh B Devagirikar · deepesh1203@gmail.com · +91 96866 80662</div>
+  </div>
+</body>
+</html>

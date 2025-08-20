@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIVARA CRM - Create Account</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin:0; padding:0; display:flex; justify-content:center; align-items:center; height:100vh; }
+    .container { background:#fff; padding:20px; border-radius:6px; width:340px; box-shadow:0 1px 8px rgba(0,0,0,0.1); }
+    h2 { text-align:center; margin-top:0; color:#333; }
+    .form-group { margin-bottom: 12px; }
+    label { display:block; margin-bottom:6px; font-weight:bold; font-size: 13px; color:#333; }
+    input { width:100%; padding:8px; border:1px solid #ddd; border-radius:4px; box-sizing:border-box; }
+    .actions { margin-top: 12px; }
+    button { width:100%; padding:10px; background-color:#333; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+    button:hover { background-color:#222; }
+    .error { color:#c62828; background:#ffebee; padding:8px; border-radius:4px; margin-bottom: 10px; }
+    .link { margin-top: 10px; display:block; text-align:center; }
+    .footer { margin-top: 10px; text-align:center; color:#777; font-size:12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Create Account</h2>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div>
+        {% for message in messages %}
+        <div style="padding:8px;background:#d4edda;color:#155724;border-radius:4px;margin-bottom:8px">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('register') }}">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="confirm">Confirm Password</label>
+        <input type="password" id="confirm" name="confirm" required>
+      </div>
+      <div class="actions">
+        <button type="submit">Create Account</button>
+      </div>
+    </form>
+
+    <a href="{{ url_for('login') }}" class="link">Back to Login</a>
+    <div class="footer">&copy; NIVARA AI And Technology</div>
+  </div>
+</body>
+</html>

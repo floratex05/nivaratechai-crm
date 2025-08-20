@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NIVARA - {{ 'Edit' if opportunity else 'New' }} Opportunity</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin:0; }
+    .container { max-width: 720px; margin: 20px auto; background:#fff; padding:20px; border-radius:6px; box-shadow:0 1px 6px rgba(0,0,0,0.08); }
+    h1 { margin:0 0 16px; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    label { display:block; font-size: 12px; color:#333; margin-bottom:4px; }
+    input, textarea, select { width:100%; padding:8px; border:1px solid #ddd; border-radius:4px; box-sizing:border-box; }
+    .actions { margin-top: 16px; display:flex; gap:8px; }
+    .button { padding:8px 12px; border:none; border-radius:4px; background:#333; color:#fff; text-decoration:none; cursor:pointer; }
+    a.button.secondary { background:#777; }
+    .footer { text-align:center; color:#777; font-size:12px; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>{{ 'Edit' if opportunity else 'New' }} Opportunity</h1>
+    <form method="POST">
+      <div class="grid">
+        <div>
+          <label>Title</label>
+          <input type="text" name="title" value="{{ opportunity['title'] if opportunity else '' }}" required />
+        </div>
+        <div>
+          <label>Amount</label>
+          <input type="number" step="0.01" name="amount" value="{{ opportunity['amount'] if opportunity else '' }}" />
+        </div>
+        <div>
+          <label>Stage</label>
+          <select name="stage">
+            {% set s = opportunity['stage'] if opportunity else 'prospecting' %}
+            <option value="prospecting" {{ 'selected' if s=='prospecting' else '' }}>Prospecting</option>
+            <option value="qualification" {{ 'selected' if s=='qualification' else '' }}>Qualification</option>
+            <option value="proposal" {{ 'selected' if s=='proposal' else '' }}>Proposal</option>
+            <option value="negotiation" {{ 'selected' if s=='negotiation' else '' }}>Negotiation</option>
+            <option value="won" {{ 'selected' if s=='won' else '' }}>Won</option>
+            <option value="lost" {{ 'selected' if s=='lost' else '' }}>Lost</option>
+          </select>
+        </div>
+        <div>
+          <label>Status</label>
+          <select name="status">
+            {% set st = opportunity['status'] if opportunity else 'open' %}
+            <option value="open" {{ 'selected' if st=='open' else '' }}>Open</option>
+            <option value="closed" {{ 'selected' if st=='closed' else '' }}>Closed</option>
+          </select>
+        </div>
+        <div>
+          <label>Customer (optional)</label>
+          <select name="customer_id">
+            <option value="">-- Select --</option>
+            {% for c in customers %}
+            {% set selected = 'selected' if opportunity and opportunity['customer_id'] == c['id'] else '' %}
+            <option value="{{ c['id'] }}" {{ selected }}>{{ c['name'] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label>Lead (optional)</label>
+          <select name="lead_id">
+            <option value="">-- Select --</option>
+            {% for l in leads %}
+            {% set selected = 'selected' if opportunity and opportunity['lead_id'] == l['id'] else '' %}
+            <option value="{{ l['id'] }}" {{ selected }}>{{ l['name'] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div style="grid-column: span 2;">
+          <label>Notes</label>
+          <textarea name="notes" rows="3">{{ opportunity['notes'] if opportunity else '' }}</textarea>
+        </div>
+        <div>
+          <label>Close Date</label>
+          <input type="date" name="close_date" value="{{ opportunity['close_date'] if opportunity else '' }}" />
+        </div>
+      </div>
+      <div class="actions">
+        <button type="submit" class="button">Save</button>
+        <a href="/opportunities" class="button secondary">Cancel</a>
+      </div>
+    </form>
+    <div class="footer">&copy; NIVARA AI and Technology — Proprietary to Deepesh B Devagirikar · deepesh1203@gmail.com · +91 96866 80662</div>
+  </div>
+</body>
+</html>
