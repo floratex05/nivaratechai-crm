@@ -1,1 +1,1 @@
-web: waitress-serve --host=0.0.0.0 --port=$PORT app:app
+web:gunicorn -w 2 -k gthread -b 0.0.0.0:$PORT app:app
